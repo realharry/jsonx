@@ -1,0 +1,11 @@
+src/
+src/**
+tests/
+**/*.test.*
+node_modules/
+.vscode/
+.github/
+tsconfig.json
+jest.config.cjs
+.eslintrc* 
+README.md

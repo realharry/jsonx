@@ -1,0 +1,59 @@
+{
+  "name": "jsonx-core",
+  "version": "1.0.0",
+  "description": "A TypeScript implementation of the j4json core features (extended JSON parser/mapper and CLI).",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc -p .",
+    "postbuild": "node scripts/rewrite-extensions.cjs",
+    "build:watch": "tsc -p src --watch",
+    "dev": "nodemon --exec ts-node ./src/index.ts",
+    "dev:watch": "tsc -p src --watch && node dist/index.js",
+    "test": "jest",
+    "test:jest": "jest",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --runInBand",
+    "test:runner": "npx ts-node-esm src/test-runner.ts",
+    "test:runner:built": "npm run build && node dist/test-runner.js",
+    "jsonx": "node bin/jsonx-cli.js",
+    "jsonx:build": "npm run build",
+    "jsonx:run-built": "node dist/tools/jsonx-cli.js"
+  },
+  "bin": {
+    "jsonx-cli": "bin/jsonx-cli.cjs"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "src/types/commander.d.ts"
+  ],
+  "keywords": [
+    "json",
+    "jsonx",
+    "parser",
+    "serializer",
+    "cli"
+  ],
+  "author": "",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "prepare": "npm run build",
+  "type": "module",
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.1",
+    "commander": "^11.1.0",
+    "jest": "^30.2.0",
+    "npm-check-updates": "^19.1.2",
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

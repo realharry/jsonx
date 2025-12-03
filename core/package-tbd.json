@@ -1,0 +1,25 @@
+{
+  "name": "v1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "build:watch": "tsc -p src --watch",
+    "dev": "nodemon --exec ts-node ./src/index.ts",
+    "dev:watch": "tsc -p src --watch && node dist/index.js",
+    "test": "node --unhandled-rejections=strict --experimental-specifier-resolution=node --loader ts-node/esm src/test-runner.ts",
+    "test:watch": "jest --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "npm-check-updates": "^19.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

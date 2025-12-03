@@ -1,0 +1,37 @@
+{
+  "name": "jsonx-mini",
+  "version": "0.1.0",
+  "description": "Mini, lightweight subset of jsonx-core: minimal parser and builder",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p .",
+    "prepack": "npm run build"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "keywords": [
+    "json",
+    "jsonx",
+    "mini",
+    "parser",
+    "builder"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jsonx-core": "file:../core"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.6",
+    "@types/jest": "^30.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "jest --runInBand"
+  }
+}
