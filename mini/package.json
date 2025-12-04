@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p .",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "test": "jest --runInBand"
   },
   "files": [
     "dist",
@@ -19,8 +20,13 @@
     "parser",
     "builder"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "@realharry",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/realharry/jsonx.git"
+  },
+  "homepage": "https://www.aimuse.cc",
+  "license": "MIT",
   "dependencies": {
     "jsonx-core": "file:../core"
   },
@@ -29,9 +35,5 @@
     "jest": "^30.2.0",
     "ts-jest": "^29.4.6",
     "@types/jest": "^30.0.0"
-  },
-  "scripts": {
-    "build": "tsc -p .",
-    "test": "jest --runInBand"
   }
 }

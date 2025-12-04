@@ -1,5 +1,5 @@
 {
-  "name": "jsonx-core",
+  "name": "@aimuse/jsonx-core",
   "version": "1.0.0",
   "description": "A TypeScript implementation of the j4json core features (extended JSON parser/mapper and CLI).",
   "main": "dist/index.js",
@@ -36,8 +36,13 @@
     "serializer",
     "cli"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "@realharry",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/realharry/jsonx.git"
+  },
+  "homepage": "https://www.aimuse.cc",
+  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
