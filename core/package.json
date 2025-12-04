@@ -1,6 +1,6 @@
 {
   "name": "@aimuse/jsonx-core",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A TypeScript implementation of the j4json core features (extended JSON parser/mapper and CLI).",
   "main": "dist/index.js",
   "scripts": {

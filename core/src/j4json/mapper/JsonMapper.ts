@@ -1,12 +1,24 @@
 import { JsonSerializable } from '../JsonSerializable';
 import { Converter, Constructor } from './Converter';
 
+export type NamingCase = 'identity' | 'snake' | 'camel' | 'pascal';
+
+export interface NamingOptions {
+    /** The case used in JSON keys (when reading/writing JSON) */
+    jsonCase?: NamingCase;
+    /** The case used in object property names (when mapping to/from JS objects) */
+    objectCase?: NamingCase;
+    /** Optional custom converter function: (key, fromCase, toCase) => string */
+    converter?: (key: string, fromCase: NamingCase, toCase: NamingCase) => string;
+}
+
 export interface JsonMapperOptions {
-    // reserved for future options like date format, naming strategy, etc.
+    naming?: NamingOptions;
 }
 
 export class JsonMapper {
     private static converters: Converter[] = [];
+    private static defaultNamingConverter?: (key: string, fromCase: NamingCase, toCase: NamingCase) => string;
 
     static registerConverter(conv: Converter) {
         JsonMapper.converters.unshift(conv);
@@ -35,8 +47,11 @@ export class JsonMapper {
             }
             // plain object - deep map
             const out: Record<string, any> = {};
+            const jsonCase = options?.naming?.jsonCase ?? 'identity';
+            const objectCase = options?.naming?.objectCase ?? 'identity';
             for (const k of Object.keys(value)) {
-                out[k] = JsonMapper.toJson(value[k], options);
+                const outKey = JsonMapper.convertKey(k, objectCase, jsonCase, options?.naming?.converter);
+                out[outKey] = JsonMapper.toJson(value[k], options);
             }
             return out;
         }
@@ -48,7 +63,26 @@ export class JsonMapper {
         return JSON.stringify(json);
     }
 
-    static fromJson<T = any>(json: any, target?: Constructor<T> | null): T {
+    private static splitWords(key: string, fromCase: NamingCase): string[] {
+        if (fromCase === 'identity') return [key];
+        if (fromCase === 'snake') return key.split('_').map((s) => s.toLowerCase());
+        // camel or pascal: split at transitions from lower->upper or number->upper
+        return key.replace(/([a-z0-9])([A-Z])/g, '$1_$2').split('_').map((s) => s.toLowerCase());
+    }
+
+    private static convertKey(key: string, fromCase: NamingCase, toCase: NamingCase, converter?: (key: string, fromCase: NamingCase, toCase: NamingCase) => string): string {
+        const conv = converter ?? JsonMapper.defaultNamingConverter;
+        if (conv) return conv(key, fromCase, toCase);
+        if (fromCase === toCase) return key;
+        const words = JsonMapper.splitWords(key, fromCase).filter(Boolean);
+        if (toCase === 'identity') return key;
+        if (toCase === 'snake') return words.join('_');
+        if (toCase === 'camel') return words.map((w, i) => i === 0 ? w : (w.charAt(0).toUpperCase() + w.slice(1))).join('');
+        if (toCase === 'pascal') return words.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join('');
+        return key;
+    }
+
+    static fromJson<T = any>(json: any, target?: Constructor<T> | null, options?: JsonMapperOptions): T {
         // If a converter matches the target or json itself, use it
         for (const c of JsonMapper.converters) {
             if (c.supports && c.supports(json, target)) {
@@ -60,12 +94,15 @@ export class JsonMapper {
             // no target provided: return plain JS value with deep conversion
             if (json == null) return json as T;
             if (Array.isArray(json)) {
-                return json.map((v) => JsonMapper.fromJson(v)) as unknown as T;
+                return json.map((v) => JsonMapper.fromJson(v, undefined, options)) as unknown as T;
             }
             if (typeof json === 'object') {
                 const out: any = {};
+                const jsonCase = options?.naming?.jsonCase ?? 'identity';
+                const objectCase = options?.naming?.objectCase ?? 'identity';
                 for (const k of Object.keys(json)) {
-                    out[k] = JsonMapper.fromJson(json[k]);
+                    const outKey = JsonMapper.convertKey(k, jsonCase, objectCase, options?.naming?.converter);
+                    out[outKey] = JsonMapper.fromJson(json[k], undefined, options);
                 }
                 return out as T;
             }
@@ -83,13 +120,38 @@ export class JsonMapper {
             }
         }
         if (typeof json === 'object') {
+            const jsonCase = options?.naming?.jsonCase ?? 'identity';
+            const objectCase = options?.naming?.objectCase ?? 'identity';
             for (const k of Object.keys(json)) {
                 const val = json[k];
+                // map json key to instance property name according to naming options
+                const prop = JsonMapper.convertKey(k, jsonCase, objectCase, options?.naming?.converter);
                 // naive mapping: if instance has a constructor for the property, user can register converters
-                instance[k] = JsonMapper.fromJson(val);
+                instance[prop] = JsonMapper.fromJson(val, undefined, options);
             }
         }
         return instance as T;
+    }
+
+    /**
+     * Convenience: convert value to JSON using explicit naming options.
+     */
+    static toJsonWithNaming(value: any, jsonCase: NamingCase, objectCase: NamingCase = 'identity', converter?: (key: string, fromCase: NamingCase, toCase: NamingCase) => string): any {
+        return JsonMapper.toJson(value, { naming: { jsonCase, objectCase, converter } });
+    }
+
+    /**
+     * Convenience: parse JSON using explicit naming options.
+     */
+    static fromJsonWithNaming<T = any>(json: any, jsonCase: NamingCase, objectCase: NamingCase = 'identity', target?: Constructor<T> | null, converter?: (key: string, fromCase: NamingCase, toCase: NamingCase) => string): T {
+        return JsonMapper.fromJson(json, target, { naming: { jsonCase, objectCase, converter } });
+    }
+
+    /**
+     * Set a global default naming converter to be used when no per-call converter provided.
+     */
+    static setDefaultNamingConverter(conv?: (key: string, fromCase: NamingCase, toCase: NamingCase) => string) {
+        JsonMapper.defaultNamingConverter = conv;
     }
 }
 

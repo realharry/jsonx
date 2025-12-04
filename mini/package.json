@@ -1,5 +1,5 @@
 {
-  "name": "jsonx-mini",
+  "name": "@aimuse/jsonx-mini",
   "version": "0.1.0",
   "description": "Mini, lightweight subset of jsonx-core: minimal parser and builder",
   "main": "dist/index.js",

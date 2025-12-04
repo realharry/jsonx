@@ -17,3 +17,7 @@ export function writeFile(path: string, value: any, options?: MiniBuildOptions):
     const out = buildMini(value, options);
     fs.writeFileSync(path, out, 'utf8');
 }
+
+// Examples
+import { convertJsonxNaming } from './examples/naming-example';
+export { convertJsonxNaming };

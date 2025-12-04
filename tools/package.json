@@ -1,0 +1,41 @@
+{
+  "name": "@aimuse/jsonx-tools",
+  "version": "0.1.0",
+  "description": "Tools for working with jsonx files (CLI scripts).",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p .",
+    "prepack": "npm run build",
+    "start": "node dist/convert.js",
+    "pretest": "npm run build",
+    "test": "jest --runInBand"
+  },
+  "bin": {
+    "jsonx-to-json": "bin/jsonx-to-json.cjs"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md"
+  ],
+  "keywords": [
+    "jsonx",
+    "json",
+    "cli",
+    "tools"
+  ],
+  "author": "@realharry",
+  "license": "MIT",
+  "dependencies": {
+    "@aimuse/jsonx-core": "file:../core",
+    "commander": "^11.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/node": "^24.10.1",
+    "jest": "^30.2.0",
+    "@types/jest": "^30.0.0",
+    "ts-jest": "^29.4.6"
+  }
+}

@@ -1,3 +1,21 @@
+Mini package examples
+
+Naming example
+
+```ts
+import { convertJsonxNaming } from '@aimuse/jsonx-mini';
+
+const input = `
+// example.jsonx
+{
+  my_prop: 1,
+  another_field: 'x'
+}
+`;
+
+const out = convertJsonxNaming(input, { jsonCase: 'snake', objectCase: 'camel' });
+console.log(out); // JSON string with snake_case keys
+```
 # jsonx-mini
 
 `jsonx-mini` is a tiny, minimal subset of the `jsonx-core` features. It provides a compact TypeScript implementation of a parser wrapper and a builder suitable for small projects or to serve as a lightweight dependency.

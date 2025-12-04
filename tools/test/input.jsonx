@@ -1,0 +1,6 @@
+// comment at top
+{
+  // inline comment
+  unquotedKey: 'value', // trailing comma after this
+  arr: [1, 2,],
+}

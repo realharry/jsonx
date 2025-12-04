@@ -23,6 +23,44 @@ const parser = new SimpleJsonParser();
 const obj = await parser.parse('{"a":1}');
 ```
 
+Naming conventions
+------------------
+
+`JsonMapper` supports mapping between JSON key naming conventions (for example `snake_case`) and JavaScript/TypeScript object property naming conventions (for example `camelCase`). Pass `JsonMapperOptions.naming` when calling `JsonMapper.toJson`, `JsonMapper.fromJson`, or via `ObjectConverter` helpers.
+
+Example — serialize JS object properties to snake_case JSON keys:
+
+```ts
+import { JsonMapper } from './src/j4json/mapper/JsonMapper';
+const obj = { myProp: 1, anotherField: 'x' };
+const json = JsonMapper.toJson(obj, { naming: { objectCase: 'camel', jsonCase: 'snake' } });
+// json -> { my_prop: 1, another_field: 'x' }
+```
+
+Example — parse snake_case JSON into camelCase object properties:
+
+```ts
+const json = { my_prop: 1 };
+const obj = JsonMapper.fromJson(json, undefined, { naming: { jsonCase: 'snake', objectCase: 'camel' } });
+// obj.myProp === 1
+```
+
+Custom converters
+-----------------
+
+You can provide a custom converter function for special naming rules:
+
+```ts
+const customConverter = (key: string, fromCase: any, toCase: any) => {
+	// implement custom mapping rules here
+	if (key.endsWith('URL')) return key.replace(/URL$/, '_url');
+	return key;
+};
+
+const json = JsonMapper.toJson({ apiURL: '...' }, { naming: { converter: customConverter, objectCase: 'camel', jsonCase: 'snake' } });
+```
+
+
 CLI
 
 The package exposes a CLI wrapper `jsonx-cli` that normalizes JSON and extended JSON formats. Examples:

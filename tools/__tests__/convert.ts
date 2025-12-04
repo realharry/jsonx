@@ -1,0 +1,21 @@
+import { execFile } from 'child_process';
+import path from 'path';
+
+test('convert.jsonx -> pure json stdout (TS test)', (done) => {
+    const bin = path.resolve(__dirname, '..', 'dist', 'convert.js');
+    const input = path.resolve(__dirname, '..', 'test', 'input.jsonx');
+    const args = [input, '--allow-comments', '--allow-single-quoted-strings', '--allow-unquoted-keys', '--allow-trailing-comma', '-i', '2'];
+
+    execFile(process.execPath, [bin, ...args], { timeout: 5000 }, (err, stdout, stderr) => {
+        if (err) return done(err as any);
+        try {
+            const obj = JSON.parse(stdout as string);
+            expect(obj.unquotedKey).toBe('value');
+            expect(Array.isArray(obj.arr)).toBe(true);
+            expect(obj.arr.length).toBe(2);
+            done();
+        } catch (e) {
+            done(e as any);
+        }
+    });
+});
