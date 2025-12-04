@@ -21,7 +21,7 @@
     "jsonx:run-built": "node dist/tools/jsonx-cli.js"
   },
   "bin": {
-    "jsonx-cli": "bin/jsonx-cli.cjs"
+    "jsonx-cli": "bin/jsonx-cli.js"
   },
   "files": [
     "dist",

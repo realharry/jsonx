@@ -4,6 +4,7 @@
   "description": "Mini, lightweight subset of jsonx-core: minimal parser and builder",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "build": "tsc -p .",
     "prepack": "npm run build",
@@ -11,7 +12,8 @@
   },
   "files": [
     "dist",
-    "src"
+    "src",
+    "bin"
   ],
   "keywords": [
     "json",
@@ -28,7 +30,11 @@
   "homepage": "https://www.aimuse.cc",
   "license": "MIT",
   "dependencies": {
-    "jsonx-core": "file:../core"
+    "jsonx-core": "file:../core",
+    "commander": "^11.1.0"
+  },
+  "bin": {
+    "jsonx-naming": "bin/jsonx-naming.js"
   },
   "devDependencies": {
     "typescript": "^5.9.3",

@@ -1,0 +1,5 @@
+// sample example
+{
+  my_prop: 1,
+  another_field: 'x'
+}
