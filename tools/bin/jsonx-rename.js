@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const path = require('path');
-const fs = require('fs');
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// attempt to load compiled dist (may be CommonJS or ESM); use createRequire to support either
-const distPath = path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'dist', 'convert.js');
+const require = createRequire(import.meta.url);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const distPath = path.resolve(__dirname, '..', 'dist', 'convert-names.cjs');
 try {
     require(distPath);
 } catch (e) {

@@ -12,7 +12,8 @@
     "test": "jest --runInBand"
   },
   "bin": {
-    "jsonx-to-json": "bin/jsonx-to-json.js"
+    "jsonx-to-json": "bin/jsonx-to-json.js",
+    "jsonx-rename": "bin/jsonx-rename.js"
   },
   "type": "module",
   "files": [

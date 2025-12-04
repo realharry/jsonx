@@ -1,0 +1,34 @@
+{
+  "name": "@aimuse/jsonx-vite",
+  "version": "0.1.0",
+  "description": "Vite plugin to import and transform .jsonx files into JS modules",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p .",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run build",
+    "test": "node ./test/test-plugin.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "jsonx",
+    "vite",
+    "plugin",
+    "json"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@aimuse/jsonx-core": "file:../core",
+    "@rollup/pluginutils": "^4.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/node": "^24.10.1",
+    "vite": "^5.0.0"
+  }
+}

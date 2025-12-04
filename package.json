@@ -5,7 +5,8 @@
   "workspaces": [
     "core",
     "mini",
-    "tools"
+    "tools",
+    "vite"
   ],
   "scripts": {
     "bootstrap": "npm install",
